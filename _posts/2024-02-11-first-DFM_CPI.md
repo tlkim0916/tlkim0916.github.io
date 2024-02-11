@@ -1,3 +1,8 @@
+---
+layout: single
+title: "Dynamic Factor Modeling for CPI data across seven countries"
+---
+
 ```python
 %matplotlib inline
 
