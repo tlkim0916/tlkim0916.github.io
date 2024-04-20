@@ -104,6 +104,7 @@ autoplot(diff_ln_cpi) +
 ```
 
     ## Warning: Removed 1 row containing missing values (`geom_line()`).
+![MoM Percentage Change in Log of CPI]({{site.url}}\images\2024-04-19-Korean-CPI-Analysis-VECM-approach\MoM Percentage Change in Log of CPI.png)
 
 ![](2024-04-19-Korean-CPI-Analysis-VECM-approach_files/figure-gfm/data-2.png)<!-- -->
 
