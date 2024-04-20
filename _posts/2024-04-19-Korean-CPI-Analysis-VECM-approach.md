@@ -72,6 +72,7 @@ names(diff_rate) <- c("diff_rate")
 autoplot(rate)+ 
   ggtitle("Yields of Treasury Bonds(3yr) in Korea")
 ```
+![Yields of Treasury Bonds(3yr) in Korea]({{site.url}}\images\2024-04-19-Korean-CPI-Analysis-VECM-approach\Yields of Treasury Bonds(3yr) in Korea.png)
 
 ![](2024-04-19-Korean-CPI-Analysis-VECM-approach_files/figure-gfm/data-1.png)<!-- -->
 
