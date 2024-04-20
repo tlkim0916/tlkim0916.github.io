@@ -1,0 +1,360 @@
+---
+title: "2024-04-19-Korean CPI Analysis: VECM approach"
+author: "Aditha"
+date: "2024-04-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Introduction
+
+Inflation is a critical economic indicator that influences both macroeconomic policy and individual financial decisions. This analysis explores several potential determinants of Korean inflation, utilizing the R software for statistical computing. Our study focuses on four critical economic indicators: interest rates, growth rates, exchange rates, and oil prices. These factors are significant for understanding the intricacies of Korea's economic landscape.
+
+Our challenge lies in the non-stationary nature of our data, which becomes stationary after differencing. This condition makes the Vector Error Correction Model(VECM) the preferred method for our analysis. This approach helps us uncover the intricate relationships between these economic indicators and their combined impact on inflation.
+
+### Methodology
+
+The data were sourced from reputable database, ensuring reliability and relevance. We used ECOS, the economic statistical portal of the Bank of Korea, and FRED, maintained by the Federal Reserve Bank of St. Louis. We chose the industrial production index due to its monthly frequency, providing a consistent data set for analysis.
+
+All data used are non-seasonally adjusted, primarily because it is readily available and officially published by the government. Since seasonally adjusted CPI data for Korea is not publicly available, we opted to standardized all data to non-seasonally adjusted for uniformity. 
+
+We employed R packages such as `dplyr`, `xts`, `ggplot2`, and `lubridate` for data manipulation and visualization. Data Retrieval was streamlined using API keys from ECOS and FRED, focusing on extracting critical indicators like Treasury Bonds yields and the Consumer Price Index.
+
+
+```{r library for data, include=FALSE}
+library(dplyr)
+library(xts)
+library(ggplot2)
+library(lubridate);
+library(ecos)
+
+ecos.setKey('JNNQW6JM2YBU3LPPVH5O')
+
+library(fredr)
+
+fredr_set_key("76e5a66429cbd1b05fbda4b2eeaf3544")
+```
+
+
+```{r data}
+library(dplyr)
+library(xts)
+library(ggplot2)
+library(lubridate);
+library(ecos)
+
+# ecos.setKey('your key')
+
+library(fredr)
+
+# fredr_set_key("your key")
+
+# 1. Yields of Treasury Bonds(3yr)
+
+# Data Retrieval and Initial Processing
+rate <- statSearch(stat_code = "721Y001",
+                   item_code1 = "5020000", cycle="M")
+#  extracting only the time and data_value columns from the rate dataset
+rate <- dplyr::select(rate, time, data_value) %>% mutate(time=ym(time))
+
+names(rate) <- c("date","rate")
+rate$date <- as.Date(rate$date)
+
+# Convert the dataframe to a time series object for easier time series manipulation
+rate <-xts(rate$rate, order.by=rate$date)
+colnames(rate) <- "rate"
+
+# Calculate the 12-month difference of the rate rates to analyze MoM changes
+diff_rate <- diff(rate, differences = 1)
+names(diff_rate) <- c("diff_rate")
+
+autoplot(rate)+ 
+  ggtitle("Yields of Treasury Bonds(3yr) in Korea")
+
+# 2. CPI, 2020=100
+
+cpi <- statSearch(stat_code = "901Y009",
+                  item_code1="0", cycle = "M")
+cpi <- dplyr::select(cpi, time, data_value) %>% mutate(time=ym(time))
+
+names(cpi) <- c("date", "cpi")
+str(cpi)
+
+cpi <- xts(cpi$cpi, order.by=cpi$date)
+
+ln_cpi <- log(cpi)
+names(ln_cpi) <- c("ln_cpi")
+diff_ln_cpi <- diff(ln_cpi, differences = 1) * 100
+names(diff_ln_cpi) <- c("diff_ln_cpi")
+autoplot(diff_ln_cpi) + 
+  ggtitle("MoM Percentage Change in Log of CPI")
+
+
+# 3. Industrial Production Indices (nsa)
+
+ind <- statSearch(stat_code = "901Y033",
+                  item_code1 ="A00", item_code2="1", cycle="M")
+
+ind <- dplyr::select(ind, time, data_value) %>% mutate(time=ym(time))
+names(ind) <- c("date", "ind")
+ind <- xts(ind$ind, order.by=ind$date)
+names(ind) <- c("ind")
+
+ln_ind <- log(ind)
+names(ln_ind) <- c("ln_ind")
+diff_ln_ind <- diff(ln_ind, differences = 1) * 100
+names(diff_ln_ind) <- c("diff_ln_ind")
+autoplot(diff_ln_ind) + 
+  ggtitle("MoM Percentage Change in Logarithmic Industrial Production Indices")
+
+
+# 4. Real Broad Effective Exchange Rate for Korea (nsa)
+
+exch <- fredr(
+  series_id = "RBKRBIS",
+  frequency = "m" # m: monthly, q: quarterly
+)
+
+exch <- dplyr::select(exch, date, value) 
+
+names(exch) <- c("date", "exch")
+
+exch <- xts(exch$exch, order.by=exch$date)
+names(exch) <- c("exch")
+exch <- na.omit(exch)
+
+ln_exch <- log(exch)
+names(ln_exch) <- c("ln_exch")
+diff_ln_exch <- diff(ln_exch, differences = 1) * 100
+names(diff_ln_exch) <- c("diff_ln_exch")
+autoplot(diff_ln_exch) + 
+  ggtitle("MoM Percentage Change in Logarithmic REER")
+
+# 5.crude oil (nsa)
+oil <- fredr(
+  series_id = "POILAPSPUSDM",
+  frequency = "m" # m: monthly, q: quarterly
+)
+
+oil <- dplyr::select(oil, date, value) 
+
+names(oil) <- c("date", "oil")
+
+oil <- xts(oil$oil, order.by=oil$date)
+names(oil) <- c("oil")
+oil <- na.omit(oil)
+
+ln_oil <- log(oil)
+names(ln_oil) <- c("ln_oil")
+diff_ln_oil <- diff(ln_oil, differences = 1) * 100
+names(diff_ln_oil) <- c("diff_ln_oil")
+autoplot(diff_ln_oil) + 
+  ggtitle("MoM Percentage Change in Log of Crude Oil")
+
+```
+
+
+### Data Merge
+
+The next step involves consolidating the five chosen variables into a single data set. The analysis will span from January 2001 to February 2024, offering a comprehensive overview of the period in question.
+
+
+```{r Merge}
+
+# Subset the series to include data from 2001 onwards
+ln_cpi <- window(ln_cpi, start=as.Date("2001-01-01"), end=as.Date("2024-02-01"))
+ln_ind <- window(ln_ind, start=as.Date("2001-01-01"), end=as.Date("2024-02-01"))
+rate <- window(rate, start=as.Date("2001-01-01"), end=as.Date("2024-02-01"))
+ln_oil <- window(ln_oil, start=as.Date("2001-01-01"), end=as.Date("2024-02-01"))
+ln_exch <- window(ln_exch, start=as.Date("2001-01-01"), end=as.Date("2024-02-01"))
+
+data_lv <- merge(ln_cpi, ln_ind, ln_exch, ln_oil, rate)
+data_lv <- as.data.frame(data_lv)
+
+
+diff_ln_cpi <- window(diff_ln_cpi, start=as.Date("2001-01-01"), end=as.Date("2024-02-01"))
+diff_ln_ind <- window(diff_ln_ind, start=as.Date("2001-01-01"), end=as.Date("2024-02-01"))
+diff_rate <- window(diff_rate, start=as.Date("2001-01-01"), end=as.Date("2024-02-01"))
+diff_ln_oil <- window(diff_ln_oil, start=as.Date("2001-01-01"), end=as.Date("2024-02-01"))
+diff_ln_exch <- window(diff_ln_exch, start=as.Date("2001-01-01"), end=as.Date("2024-02-01"))
+
+
+data_diff_ln <- merge(diff_ln_cpi, diff_ln_ind, diff_ln_exch, diff_ln_oil, diff_rate)
+data_diff_ln <- as.data.frame(data_diff_ln)
+
+
+```
+
+To apply a Vector Error Correction Model(VECM), certain prerequisites must be met, including the stationarity of differenced series and the presence of long-term cointegration among variables. 
+
+## The Augmented Dickey-Fuller test to check for stationarity
+
+Our initial data exhibits non-stationarity, a common characteristic in economics time series. To preprare for VECM analysis, it's crucial to establish that the differened data no longer follow a unit root process. We employ the Augmented Dickey-Fuller (ADF) test to confirm stationarity. This test helps determine whether each differenced series is stationary, a prerequisite for the subsequent VECM.
+
+The p-values obtained were below the 0.01 threshold, confirming that all differenced series are indeed stationary.
+```{r lib, include=FALSE}
+library(tseries)
+```
+
+
+```{r ADF, echo=FALSE}
+library(tseries)
+
+# Testing the differenced series for stationarity
+adf.test(diff_ln_cpi, alternative = "stationary")
+adf.test(diff_ln_ind, alternative = "stationary")
+adf.test(diff_ln_exch, alternative = "stationary")
+adf.test(diff_ln_oil, alternative = "stationary")
+adf.test(diff_rate, alternative = "stationary")
+
+```
+
+
+### Johansen Cointegration Test
+To explore potential long-run relationships between out variables, we conducted the Johansen cointegration test using the `urca` package. This test identifies the number of cointegrating vectors that exist among the series. Our results indicate up to two cointegrating relationships; the test statistic for 'r<=1' exceeds the 1% critical value, suggesting at least one cointegrating equation, but not for 'r<=2'. 
+Therefore, we select r=2 for our model to capture the primary long-term relationship among the variables.
+
+```{r lib for cointegration , include=FALSE}
+library(urca)
+```
+
+```{r cointegration test}
+library(urca)
+
+coint_lv <- ca.jo(data_lv, spec = 'longrun', type = 'eigen', ecdet = "const", K = 2)
+summary(coint_lv)
+
+```
+
+### Optimal Lag Selection
+
+Choosing the optimal lag length for the VECM is critical to balance model complexity and explanatory power. Criteria such as the Hannan-Quinn (HQ) and Schwarz Criterion (SC) suggested a lag length of 2, which we adopted for its simplicity and effectiveness in capturing the dynamics among the variables.
+
+
+```{r lib for optimal lag, include=FALSE}
+library(vars)
+```
+
+
+```{r optimal lag}
+
+library(vars)
+# Determining optimal lag length
+lag_lv <- VARselect(data_lv, type = "const")
+print(lag_lv)
+
+
+```
+
+### VECM
+
+With the prerequisites confirmed and parameters set, we proceed to fit the VECM. This model helps us understand how each variable responds to adjustments towards long-term equilibrium after experiencing shocsk. An examination of the fitted values against actual data will illustrate the model's accuracy and predictive power.
+
+```{r lib for vecm, include=FALSE}
+library(tsDyn)
+```
+
+```{r vecm}
+library(tsDyn)
+vecm_lv <- VECM(data_lv, lag = 2, estim = "ML", r = 2, include = "both") 
+
+summary(vecm_lv)
+
+```
+
+### Performance Analysis of the VECM
+
+```{r}
+actual_values <- data_diff_ln$diff_ln_cpi[4:length(data_diff_ln$diff_ln_cpi)]
+fitted_values <- fitted(vecm_lv)[, "ln_cpi"]*100
+# Plot actual vs. fitted values
+dates <- as.Date(attr(fitted_values, "names"))
+
+plot(dates, actual_values, type = 'l', col = 'blue', ylim = range(c(fitted_values, actual_values)), ylab = 'diff_ln_cpi', xlab = 'Time', main = 'Actual vs. Fitted Values')
+lines(dates, fitted_values, col = 'red')
+legend("topleft", legend = c("Actual", "Fitted"), col = c("blue", "red"), lty = 1)
+
+axis.Date(1, at = seq(min(dates), max(dates), by = "years"), format = "%Y")  # Modify 'by' as needed
+
+
+```
+
+From the plot, it appears that the fitted values from the VECM do not capture the full amplitude of fluctuations shown by the actual values. The fitted line tends to have a narrower range, which indicates that the model may be soothing out some of the more extreme changes observed in the actual data. 
+
+```{r}
+# Calculate RMSE
+rmse <- sqrt(mean((actual_values - fitted_values)^2))
+print(paste("RMSE:", rmse))
+
+# Calculate MAE
+mae <- mean(abs(actual_values - fitted_values))
+print(paste("MAE:", mae))
+
+# Calculate MAPE
+mape <- mean(abs((actual_values - fitted_values) / actual_values)) * 100
+print(paste("MAPE:", mape, "%"))
+
+
+# Calculate Adjusted R-squared
+# R-squared can be extracted from the model summary if provided, or calculated as follows:
+rss <- sum((actual_values - fitted_values)^2)
+tss <- sum((actual_values - mean(actual_values))^2)
+r_squared <- 1 - rss/tss
+
+n <- length(actual_values)  # Number of observations
+k <- 4 + 10 * 5 + 1  # Number of parameters in the model: cointegrating relations (r) + lagged differences (lag * number of variables) + intercept
+
+adjusted_r_squared <- 1 - (1 - r_squared) * ((n - 1) / (n - k - 1))
+print(paste("Adjusted R-squared:", adjusted_r_squared))
+
+# AIC and BIC (if not already provided in the summary)
+# AIC = 2k - 2ln(L) where L is the likelihood of the model, k is the number of parameters
+# BIC = ln(n)k - 2ln(L)
+# For VECM models in 'tsDyn', log-likelihood can be extracted from the model object
+
+log_likelihood <- logLik(vecm_lv)
+aic <- AIC(vecm_lv)
+bic <- BIC(vecm_lv)
+
+print(paste("AIC:", aic))
+print(paste("BIC:", bic))
+```
+
+
+```{r}
+# Check for stability
+# Extract eigenvalues
+eigenvalues <- vecm_lv$model.specific$lambda
+
+# Check the modulus of each eigenvalue
+modulus <- Mod(eigenvalues)
+
+# Print the eigenvalues and their modulus
+print(eigenvalues)
+print(modulus)
+
+# Stability condition: All eigenvalues should have modulus less than 1
+is.stable <- all(modulus < 1)
+
+# Print the stability status
+print(is.stable)
+
+```
+
+Generally lower RAMSE and MAE values are considered better. Without context or a benchmark model for comparison, it's hard to definitely assess these values as good or bad.
+
+The MAPE shwoing infinite values further complicates the effectiveness of the model in practical dynamics.
+
+The low value of approximately 16% for the adjusted R-squared suggests limited explanatory power of the model. This results points to the model's inadequate representation of the underlying economic dynamics.
+
+### Conclusion
+
+The VECM applied in this study reveals significant limitations in capturing the full amplitude of inflation fluctuations observed in the actual data. Notably, the fitted values from the VECM exhibit a constrained range compared to the actual data, suggesting that the model may be smoothing out some of the more pronounced changes.
+
+One of the inherent challenges with the VECM used in this analysis is its assumption that all included variables adjust to restore equilibrium when disturbances occur. This assumption may not hold if some of the variables, such as the interest rates, function as exogenous within the system. Consequently, their dynamic impacts on inflation might not be captured accurately, highlighting a potential mis-specification in the model structure.
+
+
+
