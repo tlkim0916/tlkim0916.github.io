@@ -128,6 +128,7 @@ autoplot(diff_ln_ind) +
 ```
 
     ## Warning: Removed 1 row containing missing values (`geom_line()`).
+![data-3](https://github.com/tlkim0916/tlkim0916.github.io/assets/37061817/a0417bc8-52db-4a39-bed1-971f11596443)
 
 ![](2024-04-19-Korean-CPI-Analysis-VECM-approach_files/figure-gfm/data-3.png)<!-- -->
 
@@ -156,6 +157,7 @@ autoplot(diff_ln_exch) +
 ```
 
     ## Warning: Removed 1 row containing missing values (`geom_line()`).
+![data-4](https://github.com/tlkim0916/tlkim0916.github.io/assets/37061817/d71db0ec-be81-4e15-903f-408253d691af)
 
 ![](2024-04-19-Korean-CPI-Analysis-VECM-approach_files/figure-gfm/data-4.png)<!-- -->
 
@@ -183,6 +185,7 @@ autoplot(diff_ln_oil) +
 ```
 
     ## Warning: Removed 1 row containing missing values (`geom_line()`).
+![data-5](https://github.com/tlkim0916/tlkim0916.github.io/assets/37061817/b263353b-8708-46fe-a2ff-dd15e5916431)
 
 ![](2024-04-19-Korean-CPI-Analysis-VECM-approach_files/figure-gfm/data-5.png)<!-- -->
 
@@ -456,6 +459,7 @@ legend("topleft", legend = c("Actual", "Fitted"), col = c("blue", "red"), lty = 
 
 axis.Date(1, at = seq(min(dates), max(dates), by = "years"), format = "%Y")  # Modify 'by' as needed
 ```
+![unnamed-chunk-1-1](https://github.com/tlkim0916/tlkim0916.github.io/assets/37061817/4c904aef-c672-480e-ba35-cced18a0785c)
 
 ![](2024-04-19-Korean-CPI-Analysis-VECM-approach_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
