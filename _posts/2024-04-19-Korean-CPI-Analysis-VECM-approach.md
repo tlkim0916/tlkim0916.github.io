@@ -72,7 +72,7 @@ names(diff_rate) <- c("diff_rate")
 autoplot(rate)+ 
   ggtitle("Yields of Treasury Bonds(3yr) in Korea")
 ```
-![Yields of Treasury Bonds(3yr) in Korea]({{site.url}}\images\2024-04-19-Korean-CPI-Analysis-VECM-approach\Yields of Treasury Bonds(3yr) in Korea.png)
+![data-1](https://github.com/tlkim0916/tlkim0916.github.io/assets/37061817/681303ef-90db-4793-98c2-d39ba1cb8a6d)
 
 ![](2024-04-19-Korean-CPI-Analysis-VECM-approach_files/figure-gfm/data-1.png)<!-- -->
 
@@ -104,7 +104,7 @@ autoplot(diff_ln_cpi) +
 ```
 
     ## Warning: Removed 1 row containing missing values (`geom_line()`).
-![MoM Percentage Change in Log of CPI]({{site.url}}\images\2024-04-19-Korean-CPI-Analysis-VECM-approach\MoM Percentage Change in Log of CPI.png)
+![data-1-1713706569194-2](https://github.com/tlkim0916/tlkim0916.github.io/assets/37061817/f048da1f-1b3e-4bf3-8278-8d871e0eaad8)
 
 ![](2024-04-19-Korean-CPI-Analysis-VECM-approach_files/figure-gfm/data-2.png)<!-- -->
 
