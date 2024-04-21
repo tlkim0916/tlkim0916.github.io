@@ -1,4 +1,4 @@
-2024-04-19 Korean CPI Analysis VECM Approach
+Korean CPI Analysis VECM Approach
 ================
 
 ### Introduction
