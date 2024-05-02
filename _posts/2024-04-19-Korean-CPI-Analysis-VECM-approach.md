@@ -97,7 +97,7 @@ autoplot(diff_ln_cpi) +
 
     ## Warning: Removed 1 row containing missing values (`geom_line()`).
 
-![data-2](2024-04-19-Korean-CPI-Analysis-VECM-approach_files/figure-gfm/data-2.png)<!-- -->
+![data-2](../images/2024-04-19-Korean-CPI-Analysis-VECM-approach/data-2.png)<!-- -->
 
 ``` r
 # 3. Industrial Production Indices (nsa)
@@ -120,7 +120,7 @@ autoplot(diff_ln_ind) +
 
     ## Warning: Removed 1 row containing missing values (`geom_line()`).
 
-![](2024-04-19-Korean-CPI-Analysis-VECM-approach_files/figure-gfm/data-3.png)<!-- -->
+![data-3](../images/2024-04-19-Korean-CPI-Analysis-VECM-approach/data-3-1714629269848-4.png)<!-- -->
 
 ``` r
 # 4. Real Broad Effective Exchange Rate for Korea (nsa)
@@ -148,7 +148,7 @@ autoplot(diff_ln_exch) +
 
     ## Warning: Removed 1 row containing missing values (`geom_line()`).
 
-![](2024-04-19-Korean-CPI-Analysis-VECM-approach_files/figure-gfm/data-4.png)<!-- -->
+![data-4](../images/2024-04-19-Korean-CPI-Analysis-VECM-approach/data-4.png)<!-- -->
 
 ``` r
 # 5.crude oil (nsa)
@@ -175,7 +175,7 @@ autoplot(diff_ln_oil) +
 
     ## Warning: Removed 1 row containing missing values (`geom_line()`).
 
-![](2024-04-19-Korean-CPI-Analysis-VECM-approach_files/figure-gfm/data-5.png)<!-- -->
+![data-5](../images/2024-04-19-Korean-CPI-Analysis-VECM-approach/data-5.png)<!-- -->
 
 ### Data Merge
 
@@ -448,7 +448,7 @@ legend("topleft", legend = c("Actual", "Fitted"), col = c("blue", "red"), lty = 
 axis.Date(1, at = seq(min(dates), max(dates), by = "years"), format = "%Y")  # Modify 'by' as needed
 ```
 
-![](2024-04-19-Korean-CPI-Analysis-VECM-approach_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![unnamed-chunk-1-1](../images/2024-04-19-Korean-CPI-Analysis-VECM-approach/unnamed-chunk-1-1.png)<!-- -->
 
 From the plot, it appears that the fitted values from the VECM do not
 capture the full amplitude of fluctuations shown by the actual values.
