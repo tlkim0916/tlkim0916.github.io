@@ -75,7 +75,7 @@ autoplot(diff_rate)+
 
     ## Warning: Removed 1 row containing missing values (`geom_line()`).
 
-![](2024-04-19-Korean-CPI-Analysis-VECM-approach_files/figure-gfm/data-1.png)<!-- -->
+![data-1](../images/2024-04-19-Korean-CPI-Analysis-VECM-approach/data-1.png)<!-- -->
 
 ``` r
 # 2. CPI, 2020=100
@@ -97,7 +97,7 @@ autoplot(diff_ln_cpi) +
 
     ## Warning: Removed 1 row containing missing values (`geom_line()`).
 
-![](2024-04-19-Korean-CPI-Analysis-VECM-approach_files/figure-gfm/data-2.png)<!-- -->
+![data-2](2024-04-19-Korean-CPI-Analysis-VECM-approach_files/figure-gfm/data-2.png)<!-- -->
 
 ``` r
 # 3. Industrial Production Indices (nsa)
@@ -224,47 +224,47 @@ differenced series are indeed stationary.
 
     ## Warning in adf.test(diff_ln_cpi, alternative = "stationary"): p-value smaller
     ## than printed p-value
-
+    
     ## 
     ##  Augmented Dickey-Fuller Test
     ## 
     ## data:  diff_ln_cpi
     ## Dickey-Fuller = -5.0404, Lag order = 6, p-value = 0.01
     ## alternative hypothesis: stationary
-
+    
     ## Warning in adf.test(diff_ln_ind, alternative = "stationary"): p-value smaller
     ## than printed p-value
-
+    
     ## 
     ##  Augmented Dickey-Fuller Test
     ## 
     ## data:  diff_ln_ind
     ## Dickey-Fuller = -10.539, Lag order = 6, p-value = 0.01
     ## alternative hypothesis: stationary
-
+    
     ## Warning in adf.test(diff_ln_exch, alternative = "stationary"): p-value smaller
     ## than printed p-value
-
+    
     ## 
     ##  Augmented Dickey-Fuller Test
     ## 
     ## data:  diff_ln_exch
     ## Dickey-Fuller = -5.6494, Lag order = 6, p-value = 0.01
     ## alternative hypothesis: stationary
-
+    
     ## Warning in adf.test(diff_ln_oil, alternative = "stationary"): p-value smaller
     ## than printed p-value
-
+    
     ## 
     ##  Augmented Dickey-Fuller Test
     ## 
     ## data:  diff_ln_oil
     ## Dickey-Fuller = -6.4893, Lag order = 6, p-value = 0.01
     ## alternative hypothesis: stationary
-
+    
     ## Warning in adf.test(diff_rate, alternative = "stationary"): p-value smaller
     ## than printed p-value
-
+    
     ## 
     ##  Augmented Dickey-Fuller Test
     ## 
