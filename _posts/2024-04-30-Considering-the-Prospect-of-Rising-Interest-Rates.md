@@ -49,9 +49,7 @@ ggplot(inf_us[inf_us$date >= as.Date("2000-01-01"), ]) +
   ylab("%")
 ```
 
-![](2024-04-30-Considering-the-Prospect-of-Rising-Interest-Rates_files/figure-gfm/pressure-1.png)<!-- -->
-
-![pressure-1](../images/2024-04-30-Considering-the-Prospect-of-Rising-Interest-Rates/pressure-1.png)
+![pressure-1](../images/2024-04-30-Considering-the-Prospect-of-Rising-Interest-Rates/pressure-1.png)<!-- -->
 
 ``` r
 ggplot(unemp_us[unemp_us$date >= as.Date("2000-01-01"), ]) +
@@ -61,6 +59,4 @@ ggplot(unemp_us[unemp_us$date >= as.Date("2000-01-01"), ]) +
   ylab("%")
 ```
 
-![](2024-04-30-Considering-the-Prospect-of-Rising-Interest-Rates_files/figure-gfm/pressure-2.png)<!-- -->
-
-![pressure-2](../images/2024-04-30-Considering-the-Prospect-of-Rising-Interest-Rates/pressure-2.png)
+![pressure-2](../images/2024-04-30-Considering-the-Prospect-of-Rising-Interest-Rates/pressure-2.png)<!-- -->
