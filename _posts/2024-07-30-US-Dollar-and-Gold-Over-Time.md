@@ -127,11 +127,9 @@ ggplot(combined, aes(x = date, y = value, color = variable)) +
   )
 ```
 
-![](2024-07-30-US-Dollar-and-Gold-Over-Time_files/figure-gfm/library%20for%20plot-1.png)
-
-<!-- -->
 
 
+![library for plot-1](C:\Users\kkhoo\OneDrive - KIF\GitHub\tlkim0916.github.io\images\2024-07-30-US-Dollar-and-Gold-Over-Time\library for plot-1.png)
 
 The results suggest a clear inverse relationship between the two assets.
 When the value of the dollar decreases, the value of gold tends to
