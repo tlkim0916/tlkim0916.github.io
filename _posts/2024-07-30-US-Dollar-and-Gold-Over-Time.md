@@ -29,11 +29,11 @@ getSymbols("DX-Y.NYB", verbose = TRUE)
 ```
 
     ## downloading  DX-Y.NYB .....
-
+    
     ## Warning: DX-Y.NYB contains missing values. Some functions will not work if
     ## objects contain missing values in the middle of the series. Consider using
     ## na.omit(), na.approx(), na.fill(), etc to remove or replace them.
-
+    
     ## [1] "DX-Y.NYB"
 
 ``` r
@@ -65,11 +65,11 @@ getSymbols("GC=F", verbose = TRUE)
 ```
 
     ## downloading  GC=F .....
-
+    
     ## Warning: GC=F contains missing values. Some functions will not work if objects
     ## contain missing values in the middle of the series. Consider using na.omit(),
     ## na.approx(), na.fill(), etc to remove or replace them.
-
+    
     ## [1] "GC=F"
 
 ``` r
@@ -127,7 +127,11 @@ ggplot(combined, aes(x = date, y = value, color = variable)) +
   )
 ```
 
-![](2024-07-30-USD-and-Gold-Over-Time_files/figure-gfm/library%20for%20plot-1.png)<!-- -->
+![](2024-07-30-US-Dollar-and-Gold-Over-Time_files/figure-gfm/library%20for%20plot-1.png)
+
+<!-- -->
+
+
 
 The results suggest a clear inverse relationship between the two assets.
 When the value of the dollar decreases, the value of gold tends to
