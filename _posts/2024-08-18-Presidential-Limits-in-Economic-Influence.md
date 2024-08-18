@@ -66,4 +66,6 @@ ggplot() +
   theme_minimal()
 ```
 
-![](2024-08-18-Presidential-Limits-in-Economic-Influence_files/figure-gfm/plot-1.png)<!-- -->
+
+
+![plot-1](C:\Users\kkhoo\OneDrive - KIF\GitHub\tlkim0916.github.io\images\2024-08-18-Presidential-Limits-in-Economic-Influence\plot-1-1723950134978-3.png)
