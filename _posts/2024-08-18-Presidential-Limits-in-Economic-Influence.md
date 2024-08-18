@@ -65,5 +65,4 @@ ggplot() +
   scale_color_manual(values = c("US CPI Inflation" = "red", "Federal Funds Rate" = "blue")) +
   theme_minimal()
 ```
-
-![plot-1](../images/2024-08-18-Presidential-Limits-in-Economic-Influence/plot-1.png)
+![plot-1](../images/2024-08-18-Presidential-Limits-in-Economic-Influence/plot-1.png)<!-- -->
